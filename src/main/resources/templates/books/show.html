@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/fragments :: head}">
+</head>
+
+<body>
+	<header th:insert="~{fragments/navbar :: navbar('books')}"></header>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-12">
+
+				<th:block th:object="${book}">
+
+
+					<h1 class="py-4 mb-2 text-center">
+						Detail for [[ *{title} ]]
+					</h1>
+
+					<div class="row justify-content-center">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									Single book detail -- ISBN: [[ *{isbn} ]]
+								</div>
+								<div class="card-body">
+									<h5 class="card-title">
+										by [[ *{author} ]]
+									</h5>
+									<p class="card-text">
+										With supporting text below as a natural lead-in to additional content. With
+										supporting text below as a natural lead-in to additional content.With supporting
+										text below as a natural lead-in to additional content.
+									</p>
+									<ul>										
+										<li th:each="borrowing: *{borrowings}">
+											<p>Consegnato il [[ ${ borrowing.borrowingDate} ]],<span th:if="${borrowing.returnDate}"> restituito il: [[ ${ borrowing.returnDate} ]]</span> 
+												<span th:unless="${borrowing.returnDate}"> non ancora restituito...</span></p>
+										</li>
+									</ul>
+									<a th:href="@{/books}" class="btn btn-primary">Back</a>
+								</div>
+								<div class="card-footer">
+									Remaining copies: [[ *{availableCopies} ]]
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</th:block>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+</body>
+
+</html>

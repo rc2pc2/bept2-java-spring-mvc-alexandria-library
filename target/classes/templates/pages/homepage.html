@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:insert="~{fragments/fragments :: head}">
+  </head>
+  <body>
+	<header th:insert="~{fragments/navbar :: navbar('home')}"></header>
+	
+	<main class="container">
+		<div class="row">			
+			<h1>
+				Homepage
+			</h1>
+		</div>
+	</main>
+	
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+  </body>
+</html>
+    

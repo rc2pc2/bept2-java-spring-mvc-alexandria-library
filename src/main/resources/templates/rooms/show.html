@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/fragments :: head}">
+</head>
+
+<body>
+	<header th:insert="~{fragments/navbar :: navbar('rooms')}"></header>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-12">
+
+				<th:block th:object="${room}">
+
+
+					<h1 class="py-4 mb-2 text-center">
+						Detail for [[ *{name} ]]
+					</h1>
+
+					<div class="row justify-content-center">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									Maximum Capacity: [[ *{capacity} ]]
+								</div>
+								<div class="card-body">
+									<p class="card-title text-success" th:if="*{available}">
+										This room still has available seats
+									</p>
+									<p class="card-title text-warning" th:unless="*{available}">
+										This room is already full
+									</p>
+									<p class="card-text">
+										With supporting text below as a natural lead-in to additional content. With
+										supporting text below as a natural lead-in to additional content.With supporting
+										text below as a natural lead-in to additional content.
+									</p>
+									<a th:href="@{/rooms}" class="btn btn-primary">Back</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</th:block>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+</body>
+
+</html>

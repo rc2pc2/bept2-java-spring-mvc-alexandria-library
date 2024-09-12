@@ -17,7 +17,13 @@
 			          <a class="nav-link" href="#" th:href="@{/books}" th:classappend="${route == 'books' ? 'active' : ''}">Books</a>
 			        </li>
 					<li class="nav-item">
+					  <a class="nav-link" href="#" th:href="@{/categories}" th:classappend="${route == 'categories' ? 'active' : ''}">Categories</a>
+					</li>
+					<li class="nav-item">
 					  <a class="nav-link" href="#" th:href="@{/rooms}" th:classappend="${route == 'rooms' ? 'active' : ''}">Rooms</a>
+					</li>
+					<li class="nav-item">
+					  <a class="nav-link" href="#" th:href="@{/borrowings}" th:classappend="${route == 'borrowings' ? 'active' : ''}">Borrowings</a>
 					</li>
 			    </div>
 			  </div>

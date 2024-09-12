@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/fragments :: head}">
+</head>
+
+<body>
+	<header th:insert="~{fragments/navbar :: navbar('borrowings')}"></header>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-12">
+
+				<th:block th:if="${borrowings.size() > 0}">
+					<h1 class="py-4 mb-3 text-center fw-bold">
+						Borrowings list:
+					</h1>
+					
+					<th:block th:if="${successMessage != null}">
+						<div th:replace="~{fragments/fragments :: successAlert(${successMessage})}"></div>
+					</th:block>
+					
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Book Title</th>
+								<th>Borrowing Date</th>
+								<th>Return Date</th>
+								<th class="button-headers"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="borrowing : ${borrowings}">
+								<td th:text="${borrowing.id}"></td>
+								<td th:text="${borrowing.book.title}"></td>
+								<td th:text="${borrowing.borrowingDate}"></td>
+								<td th:text="${borrowing.returnDate}"></td>
+								<td class>
+									<button disabled th:href="@{/borrowings/{id}(id=${borrowing.id})}" class="btn btn-sm btn-primary">
+										Show
+									</button>
+								
+									<button disabled th:href="@{/borrowings/edit/{id}(id=${borrowing.id})}" class="btn btn-sm btn-success">
+										Edit
+									</a>
+								
+									<!-- Button trigger modal -->
+									<button disabled type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${borrowing.id}">
+									  	Delete
+									</button>
+
+									<!-- Modal -->
+									<div class="modal fade" th:id="'delete-modal-' + ${borrowing.id}" tabindex="-1" aria-labelledby="delete-modal" aria-hidden="true">
+									  <div class="modal-dialog modal-dialog modal-dialog-centered">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting "[[ ${borrowing.book.title} ]]"</h1>
+									        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									      </div>
+									      <div class="modal-body">
+									        Are you sure you want to delete the borrowing of the <strong>"[[ ${borrowing.book.title} ]]"</strong> with id [[ ${borrowing.id} ]], requested on [[ ${borrowing.borrowingDate} ]]?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<form class="d-inline-block" th:action="@{/borrowings/delete/{id}(id=${borrowing.id})}" method="POST">
+												<button type="submit" class="btn btn-danger">
+													Delete
+												</button>
+											</form>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</th:block>
+
+				<th:block th:unless="${borrowings.size() > 0}">
+					<h3 class="py-5 text-center">
+						No borrowings are available this time...
+					</h3>
+				</th:block>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+</body>
+
+</html>

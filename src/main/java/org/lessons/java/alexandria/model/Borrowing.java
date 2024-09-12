@@ -20,8 +20,7 @@ public class Borrowing {
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotNull
-	@NotEmpty
+//	@NotNull
 	private LocalDate borrowingDate;
 	
 	private LocalDate returnDate;

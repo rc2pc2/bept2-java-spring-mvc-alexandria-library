@@ -10,10 +10,7 @@
 	<main class="container">
 		<div class="row">
 			<div class="col-12">
-
 				<th:block th:object="${book}">
-
-
 					<h1 class="py-4 mb-2 text-center">
 						Detail for [[ *{title} ]]
 					</h1>
@@ -26,20 +23,29 @@
 								</div>
 								<div class="card-body">
 									<h5 class="card-title">
-										by [[ *{author} ]]
+										Author: [[ *{author} ]]
 									</h5>
+									<h6 class="card-title" th:if="*{categories.size()} > 0">
+										Categories: <span class="" th:each="category : *{categories}">
+										<a th:href="@{/categories/{id}(id=${category.id})}">[[ ${category.name} ]]</a>,
+									</span>
+									</h6>
 									<p class="card-text">
 										With supporting text below as a natural lead-in to additional content. With
 										supporting text below as a natural lead-in to additional content.With supporting
 										text below as a natural lead-in to additional content.
 									</p>
-									<ul>										
+									<ul class="mb-3">										
 										<li th:each="borrowing: *{borrowings}">
 											<p>Consegnato il [[ ${ borrowing.borrowingDate} ]],<span th:if="${borrowing.returnDate}"> restituito il: [[ ${ borrowing.returnDate} ]]</span> 
 												<span th:unless="${borrowing.returnDate}"> non ancora restituito...</span></p>
 										</li>
 									</ul>
-									<a th:href="@{/books}" class="btn btn-primary">Back</a>
+									<div class="d-flex justify-content-between">									
+										<a th:href="@{/books}" class="btn btn-primary btn-lg">Back</a>
+										<a th:if="*{availableCopies} > 0" th:href="@{/books/{id}/borrow(id=${book.id})}" class="btn btn-success btn-lg">Chiedi in prestito</a>
+										<button th:unless="*{availableCopies} > 0"  class="btn btn-secondary btn-lg" disabled>Non ci sono copie residue</button>
+									</div>
 								</div>
 								<div class="card-footer">
 									Remaining copies: [[ *{availableCopies} ]]

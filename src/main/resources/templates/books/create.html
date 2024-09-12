@@ -46,6 +46,12 @@
 										  </ul>
 									  </div>
 								</div>
+								
+								<div th:each="category : ${categories}" class="form-check mb-3" role="group" aria-label="Basic checkbox toggle button group">									
+								  <input type="checkbox" class="form-check-input" autocomplete="off" th:value="${category.id}" th:id="|category_${category.id}|" th:field="${book.categories}">
+								  <label class="form-check-label" th:for="|category_${category.id}|" th:text="${category.name}"></label>
+								</div>
+								
 								<div class="mb-3">
 									  <label for="author" class="form-label">Author:</label>
 									  <input type="text" class="form-control" id="author" placeholder="Herman Melville" th:field="*{author}" th:errorClass="is-invalid">

@@ -12,6 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
@@ -70,8 +73,25 @@ public class Book {
     		 "where books.id = id)")
     private Integer availableCopies;
 
+    // TODO aggiungere relazione con categorie
 	
-    public Integer getNumberOfCopies() {
+    @ManyToMany()
+    @JoinTable(
+       name = "book_category",
+       joinColumns = @JoinColumn(name = "book_id"),
+       inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
+    
+    public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+	public Integer getNumberOfCopies() {
 		return numberOfCopies;
 	}
 

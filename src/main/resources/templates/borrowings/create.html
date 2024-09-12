@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/fragments :: head}">
+</head>
+
+<body>
+	<header th:insert="~{fragments/navbar :: navbar('borrowings/create')}"></header>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-12">
+
+				<th:block>
+					<h1 class="py-4 mb-2 text-center">
+						Borrow a new copy of 
+						<span th:text="${borrowing.book.title}"></span>
+					</h1>
+
+					<div class="row justify-content-center">
+						<div class="col-6">
+							
+							<form 
+								id="borrowing-form"
+								th:object="${borrowing}"
+								th:action="@{/borrowings/create}" 
+								method="POST"
+							>				
+							
+								<input type="hidden" th:field="*{book}" id="book">
+
+								<div class="mb-3">
+									  <label for="returnDate" class="form-label">Return Date:</label>
+									  <input type="date" class="form-control" id="returnDate" placeholder="Moby Dick" th:field="*{returnDate}" th:errorClass="is-invalid">
+									  <div th:if="${#fields.hasErrors('returnDate')}" class="invalid-feedback">  	
+										  <ul>
+										     <li th:each="err : ${#fields.errors('returnDate')}" th:text="${err}"></li>
+										  </ul>
+									  </div>
+								</div>
+								
+								<div class="mb-3 d-flex justify-content-between">
+									<input type="submit" class="btn btn-primary btn-lg" value="Create new book">
+									<input type="reset" class="btn btn-warning btn-lg" value="Reset fields">
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</th:block>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+</body>
+
+</html>

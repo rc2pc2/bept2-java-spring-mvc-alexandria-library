@@ -1,10 +1,13 @@
 package org.lessons.java.alexandria.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.lessons.java.alexandria.model.Book;
+import org.lessons.java.alexandria.model.Borrowing;
 import org.lessons.java.alexandria.repo.BookRepository;
 import org.lessons.java.alexandria.service.BookService;
+import org.lessons.java.alexandria.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,17 +24,17 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/books")
 public class BookController {
-	//	repository field con autowired per d.i.
-	
-//	@Autowired
-//	private BookRepository repo;
-	
+
+	@Autowired
 	private BookService service;
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	@GetMapping()
 	public String index(Model model) {	
 		//	prendo i dati da consegnare a books/index
-		List<Book> books = service.findAllSortedByRecent();
+		List<Book> books = service.findAll();
 
 		//	li inserisco nel modello
 		model.addAttribute("books", books);
@@ -51,15 +54,28 @@ public class BookController {
 	   return "/books/show";
 	}
 	
-	// CREATE	
+	@GetMapping("/{id}/borrow")
+	public String borrow(@PathVariable("id") Integer id , Model model, RedirectAttributes redirectAttributes) {
+		Book book = service.getById(id);
+		if (book.getAvailableCopies() > 0) {			
+			Borrowing borrowing = new Borrowing();
+			borrowing.setBorrowingDate(LocalDate.now());
+			borrowing.setBook(book);
+			model.addAttribute("borrowing", borrowing);
+			return "/borrowings/create";
+		} else {
+			redirectAttributes.addFlashAttribute("successMessage", book.getTitle() + " has no more copies available!");
+			return "redirect:/books";
+		}
+	}
 	
 	@GetMapping("/create")
 	public String create(Model model) {
 	   model.addAttribute("book", new Book());
+	   model.addAttribute("categories", categoryService.findAll());
 	   return "/books/create";
 	}
-	
-	// STORE
+
 	
 	@PostMapping("/create")
 	public String store(@Valid @ModelAttribute("book") Book formBook, 
@@ -68,6 +84,7 @@ public class BookController {
 						RedirectAttributes redirectAttributes)
 	{
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("categories", categoryService.findAll());
 			return "/books/create";
 		} else {
 			
@@ -88,6 +105,7 @@ public class BookController {
 //		model.addAttribute("book", bookToEdit);
 		
 		model.addAttribute("book", service.getById(id));
+		model.addAttribute("categories", categoryService.findAll());
 		
 		// restituisco la view con il model inserito		
 		return "/books/edit";
@@ -104,6 +122,7 @@ public class BookController {
 		//	se ci sono errori nel form
 		if (bindingResult.hasErrors()) {
 			// ritorna al form (e mostra gli errori)
+			model.addAttribute("categories", categoryService.findAll());
 			return "/books/edit";
 		} else { // altrimenti
 			//	prendi la mia repository particolare e aggiorna il libro con i nuovi dati convalidati

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/fragments :: head}">
+</head>
+
+<body>
+	<header th:insert="~{fragments/navbar :: navbar('categories')}"></header>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-12">
+				<th:block th:object="${category}">
+					<h1 class="py-4 mb-2 text-center">
+						Detail for [[ *{name} ]]
+					</h1>
+
+					<div class="row justify-content-center">
+						<div class="col-6">
+							<div class="card">
+								<div class="card-header">
+									Category with id : [[ *{id} ]]
+								</div>
+								<div class="card-body">
+									<h5 class="card-title mb-3">
+										[[ *{name} ]]
+									</h5>
+									<ul th:if="*{books.size()} > 0" class="mb-3">										
+										<li th:each="book : *{books}">
+											<a th:href="@{/books/{id}(id=${book.id})}" >
+												[[ ${book.title} ]]  -  [[ ${book.author} ]]											
+											</a>
+										</li>
+									</ul>
+									<div class="d-flex justify-content-between">									
+										<a th:href="@{/categories}" class="btn btn-primary">Back</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</th:block>
+			</div>
+		</div>
+	</main>
+
+	<footer th:replace="~{fragments/fragments :: footer}"></footer>
+	<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
+</body>
+
+</html>

@@ -34,6 +34,7 @@
 								<th>Available Copies</th>
 								<th>Updated at</th>
 								<th class="button-headers"></th>
+								<th class="borrowing-header"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -82,6 +83,9 @@
 									  </div>
 									</div>
 									
+								</td>
+								<td>
+									<a th:if="${book.availableCopies} > 0" th:href="@{/books/{id}/borrow(id=${book.id})}" class="btn btn-outline-primary btn-sm">Borrow</a>
 								</td>
 							</tr>
 						</tbody>

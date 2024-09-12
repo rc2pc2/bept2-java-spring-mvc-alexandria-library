@@ -5,18 +5,18 @@
 </head>
 
 <body>
-	<header th:insert="~{fragments/navbar :: navbar('books')}"></header>
+	<header th:insert="~{fragments/navbar :: navbar('categories')}"></header>
 
 	<main class="container">
 		<div class="row">
 			<div class="col-12">
 
-				<th:block th:if="${books.size() > 0}">
+				<th:block th:if="${categories.size() > 0}">
 					<h1 class="py-4 mb-3 text-center fw-bold">
-						Book list:
+						Categories:
 					</h1>
 					<div class="mb-3 d-flex pe-5">
-						<a th:href="@{/books/create}" class="ms-auto me-5 btn btn-lg btn-primary">Create new book</a>
+						<a th:href="@{/categories/create}" class="ms-auto me-5 btn btn-lg btn-primary">Create new category</a>
 					</div>
 					
 					<th:block th:if="${successMessage != null}">
@@ -27,53 +27,44 @@
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Title</th>
-								<th>Author</th>
-								<th>ISBN</th>
-								<th>Number of Copies</th>
-								<th>Available Copies</th>
-								<th>Updated at</th>
+								<th>Name</th>
+								<th>Number of books</th>
 								<th class="button-headers"></th>
-								<th class="borrowing-header"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="book : ${books}">
-								<td th:text="${book.id}"></td>
-								<td th:text="${book.title}"></td>
-								<td th:text="${book.author}"></td>
-								<td th:text="${book.isbn}"></td>
-								<td th:text="${book.numberOfCopies}"></td>
-								<td th:text="${book.availableCopies}"></td>
-								<td th:text="${book.updatedAt}"></td>
+							<tr th:each="category: ${categories}">
+								<td th:text="${category.id}"></td>
+								<td th:text="${category.name}"></td>
+								<td>0</td>
 								<td class>
-									<a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-sm btn-primary">
+									<a th:href="@{/categories/{id}(id=${category.id})}" class="btn btn-sm btn-primary">
 										Show
 									</a>
 								
-									<a th:href="@{/books/edit/{id}(id=${book.id})}" class="btn btn-sm btn-success">
+									<a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn btn-sm btn-success">
 										Edit
 									</a>
 								
 									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${book.id}">
+									<a type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${category.id}">
 									  	Delete
-									</button>
+									</a>
 
 									<!-- Modal -->
-									<div class="modal fade" th:id="'delete-modal-' + ${book.id}" tabindex="-1" aria-labelledby="delete-modal" aria-hidden="true">
+									<div class="modal fade" th:id="'delete-modal-' + ${category.id}" tabindex="-1" aria-labelledby="delete-modal" aria-hidden="true">
 									  <div class="modal-dialog modal-dialog modal-dialog-centered">
 									    <div class="modal-content">
 									      <div class="modal-header">
-									        <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting "[[ ${book.title} ]]"</h1>
+									        <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting "[[ ${category.name} ]]"</h1>
 									        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 									      </div>
 									      <div class="modal-body">
-									        Are you sure you want to delete the book with title <strong>"[[ ${book.title} ]]"</strong>?
+									        Are you sure you want to delete the category named [[ ${category.name} ]]?
 									      </div>
 									      <div class="modal-footer">
 									        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-											<form class="d-inline-block" th:action="@{/books/delete/{id}(id=${book.id})}" method="POST">
+											<form class="d-inline-block" th:action="@{/categories/delete/{id}(id=${category.id})}" method="POST">
 												<button type="submit" class="btn btn-danger">
 													Delete
 												</button>
@@ -84,17 +75,14 @@
 									</div>
 									
 								</td>
-								<td>
-									<a th:if="${book.availableCopies} > 0" th:href="@{/books/{id}/borrow(id=${book.id})}" class="btn btn-outline-primary btn-sm">Borrow</a>
-								</td>
 							</tr>
 						</tbody>
 					</table>
 				</th:block>
 
-				<th:block th:unless="${books.size() > 0}">
+				<th:block th:unless="${categories.size() > 0}">
 					<h3 class="py-5 text-center">
-						No books are available this time...
+						No categories are available this time...
 					</h3>
 				</th:block>
 			</div>

@@ -15,6 +15,10 @@ public class BookService {
 	@Autowired
 	private BookRepository repository;
 	
+	public List<Book> findAll(){
+		return repository.findAll();
+	}
+	
 	public List<Book> findAllSortedByRecent(){
 		return repository.findAll(Sort.by("updatedAt"));
 	}

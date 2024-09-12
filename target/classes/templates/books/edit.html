@@ -12,7 +12,7 @@
 
 				<th:block>
 					<h1 class="py-4 mb-2 text-center">
-						Editing <strong>"[[ ${ book.title } ]]"</strong>
+						Editing book
 					</h1>
 
 					<div class="row justify-content-center">
@@ -24,18 +24,6 @@
 								th:action="@{/books/edit/{id}(id=${book.id})}" 
 								method="POST"
 							>				
-								
-								<!-- <th:block th:if="${#fields.hasErrors()}">
-									<div class="ps-3" >
-										<ul class="alert alert-danger">
-										    <li class="ps-2"
-										       th:each="err : ${#fields.allErrors()}" 
-										       th:text="${err}"
-											  >
-										    </li>
-										</ul>
-									</div>
-								</th:block> -->
 												
 								<div class="mb-3">
 									  <label for="title" class="form-label">Title:</label>
@@ -46,6 +34,13 @@
 										  </ul>
 									  </div>
 								</div>
+								
+								<div th:each="category : ${categories}" class="form-check mb-3" role="group" aria-label="Basic checkbox toggle button group">									
+								  <input type="checkbox" class="form-check-input" autocomplete="off" th:value="${category.id}" th:id="|category_${category.id}|" th:field="${book.categories}">
+								  <label class="form-check-label" th:for="|category_${category.id}|" th:text="${category.name}"></label>
+								</div>
+								
+								
 								<div class="mb-3">
 									  <label for="author" class="form-label">Author:</label>
 									  <input type="text" class="form-control" id="author" placeholder="Herman Melville" th:field="*{author}" th:errorClass="is-invalid">
@@ -67,14 +62,14 @@
 								<div class="mb-4">
 									  <label for="title" class="form-label">ISBN Code:</label>
 									  <input type="text" class="form-control" id="isbn" placeholder="9788483087565" th:field="*{isbn}" th:errorClass="is-invalid">
-		  								  <div th:if="${#fields.hasErrors('isbn')}" class="invalid-feedback">  	
-		  									  <ul>
-		  									     <li th:each="err : ${#fields.errors('isbn')}" th:text="${err}"></li>
-		  									  </ul>
-		  								  </div>
+	  								  <div th:if="${#fields.hasErrors('isbn')}" class="invalid-feedback">  	
+	  									  <ul>
+	  									     <li th:each="err : ${#fields.errors('isbn')}" th:text="${err}"></li>
+	  									  </ul>
+	  								  </div>
 								</div>
 								<div class="mb-3 d-flex justify-content-between">
-									<input type="submit" class="btn btn-primary btn-lg" value="Update book">
+									<input type="submit" class="btn btn-primary btn-lg" value="Edit book">
 									<input type="reset" class="btn btn-warning btn-lg" value="Reset fields">
 								</div>
 							</form>
